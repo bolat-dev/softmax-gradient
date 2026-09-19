@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def softmax(z):
+def S(z):
     # Subtract the row max for numerical stability
     e = np.exp(z - z.max(axis=1, keepdims=True))
     return e / e.sum(axis=1, keepdims=True)
@@ -28,14 +28,14 @@ lr = 1.0
 N = X.shape[0]
 
 for i in range(1000):
-    p = softmax(X @ W + b)          # predicted probabilities (y_hat)
+    p = S(X @ W + b)          # predicted probabilities (y_hat)
     dW = X.T @ (p - y) / N          # dL/dW = (1/N) X^T (y_hat - y)
     db = (p - y).sum(axis=0) / N    # dL/db = (1/N) sum(y_hat - y)
     W -= lr * dW
     b -= lr * db
 
 # Final evaluation
-p = softmax(X @ W + b)
+p = S(X @ W + b)
 loss = -np.sum(y * np.log(p)) / N   # mean cross-entropy loss
 
 np.set_printoptions(suppress=True, precision=4)
